@@ -22,20 +22,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Datadog Synthetic tests
-        uses: DataDog/synthetics-ci-github-action@v1
+        uses: DataDog/synthetics-ci-github-action@v3.8.2
         with:
-          api_key: ${{ secrets.DATADOG_API_KEY }}
-          app_key: ${{ secrets.DATADOG_APP_KEY }}
+          api-key: ${{ secrets.DATADOG_API_KEY }}
+          app-key: ${{ secrets.DATADOG_APP_KEY }}
           # Optional: specify test IDs to run
-          # public_ids: 'abc-def-ghi, 123-456-789'
+          # public-ids: 'abc-def-ghi, 123-456-789'
           # Optional: configure test locations
           # locations: 'aws:us-east-1, aws:eu-west-1'
           # Optional: set test configuration override
-          # config_path: datadog-ci.json
+          # config-path: datadog-ci.json
           # Optional: fail CI if tests fail
-          fail_on_critical_errors: true
-          # Optional: poll results
-          poll_results: true
+          fail-on-critical-errors: true
           # Optional: subdomain (default: app)
           subdomain: app
 
