@@ -21,8 +21,6 @@ jobs:
   synthetics:
     runs-on: ubuntu-latest
     name: Run Datadog Synthetic Tests
-    # Skip the job if the secrets are not configured
-    if: ${{ secrets.DATADOG_API_KEY != '' && secrets.DATADOG_APP_KEY != '' }}
     permissions:
       contents: read
       actions: read
