@@ -53,10 +53,10 @@ jobs:
       - name: Check if tests were run
         if: always()
         run: |
-          tests_not_found="${{ steps.synthetics.outputs.tests-not-found-count }}"
-          tests_skipped="${{ steps.synthetics.outputs.tests-skipped-count }}"
-          passed_count="${{ steps.synthetics.outputs.passed-count }}"
-          failed_count="${{ steps.synthetics.outputs.failed-count }}"
+          tests_not_found=${{ steps.synthetics.outputs.tests-not-found-count }}
+          tests_skipped=${{ steps.synthetics.outputs.tests-skipped-count }}
+          passed_count=${{ steps.synthetics.outputs.passed-count }}
+          failed_count=${{ steps.synthetics.outputs.failed-count }}
           
           # Use default value of 0 if variables are empty
           tests_not_found=${tests_not_found:-0}
