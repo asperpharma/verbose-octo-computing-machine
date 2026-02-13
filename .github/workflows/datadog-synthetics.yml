@@ -32,6 +32,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Datadog Synthetic tests
+        id: synthetics
         uses: DataDog/synthetics-ci-github-action@v3.8.2
         with:
           api-key: ${{ secrets.DATADOG_API_KEY }}
@@ -48,6 +49,25 @@ jobs:
           fail-on-missing-tests: false
           # Optional: subdomain (default: app)
           subdomain: app
+
+      - name: Check if tests were run
+        if: always()
+        run: |
+          if [ "${{ steps.synthetics.outputs.tests-not-found-count }}" != "0" ] || [ "${{ steps.synthetics.outputs.tests-skipped-count }}" != "0" ]; then
+            echo "⚠️ WARNING: Some tests were not found or skipped."
+            echo "Tests not found: ${{ steps.synthetics.outputs.tests-not-found-count }}"
+            echo "Tests skipped: ${{ steps.synthetics.outputs.tests-skipped-count }}"
+            echo "Please check your Datadog configuration or see DATADOG_SETUP.md for setup instructions."
+          fi
+          if [ "${{ steps.synthetics.outputs.passed-count }}" = "0" ] && [ "${{ steps.synthetics.outputs.failed-count }}" = "0" ]; then
+            echo "⚠️ WARNING: No tests were executed."
+            echo "Please configure synthetic tests in Datadog or add test configuration files."
+            echo "See DATADOG_SETUP.md for setup instructions."
+          else
+            echo "✅ Tests executed successfully!"
+            echo "Passed: ${{ steps.synthetics.outputs.passed-count }}"
+            echo "Failed: ${{ steps.synthetics.outputs.failed-count }}"
+          fi
 
       - name: Upload test results
         if: always()
